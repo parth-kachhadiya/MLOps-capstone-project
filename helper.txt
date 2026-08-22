@@ -1,0 +1,9 @@
+                        +-----------------------+
+                        |   Setup Instruction   |
+                        +-----------------------+
+
+
+[1]. Clone repo
+[2]. Activate virtual environment (recommended)
+[3]. `pip install cookiecutter`
+[4]. `cookiecutter -c v1 https://github.com/drivendata/cookiecutter-data-science`
