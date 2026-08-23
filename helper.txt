@@ -7,3 +7,18 @@
 [2]. Activate virtual environment (recommended)
 [3]. `pip install cookiecutter`
 [4]. `cookiecutter -c v1 https://github.com/drivendata/cookiecutter-data-science`
+
+
+                        +-----------------------------+
+                        |   Setup MLFlow on Dagshub   |
+                        +-----------------------------+
+
+[1]. Go to `https://dagshub.com/dashboard` 
+     • Dagshub is also called "Github of Machine Learning".
+[2]. Connect your github repo with Dagshub.
+[3]. Copy
+     • Experiments > `MLFlow tracking URI`
+     • Experiments > `Using MLFlow tracking`
+     
+     You can also open MLFlow UI from `Experiments > "Go to MLFlow UI"`
+[4]. 
