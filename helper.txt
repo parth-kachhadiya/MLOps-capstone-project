@@ -7,7 +7,7 @@
 [2]. Activate virtual environment (recommended)
 [3]. `pip install cookiecutter`
 [4]. `cookiecutter -c v1 https://github.com/drivendata/cookiecutter-data-science`
-
+[5]. Git Actions add > commit > push
 
                         +-----------------------------+
                         |   Setup MLFlow on Dagshub   |
@@ -18,7 +18,19 @@
 [2]. Connect your github repo with Dagshub.
 [3]. Copy
      • Experiments > `MLFlow tracking URI`
-     • Experiments > `Using MLFlow tracking`
-     
+     • Experiments > `Using MLFlow tracking`   
      You can also open MLFlow UI from `Experiments > "Go to MLFlow UI"`
-[4]. 
+[4]. Execute Experiments files in `notebook/` directory and run your experiments.
+[5]. Git Actions add > commit > push
+
+
+
+                        +---------------+
+                        |   Setup DVC   |
+                        +---------------+
+
+[1]. `dvc init`
+[2]. Create a "local_dvc_s3" directory for dvc (In future we will move to AWS S3 bucket).
+[3]. `dvc remote add -d mylocal <your_local_dir_name>` (At `mylocal` you can give any name)
+[4]. Add "local_dvc_s3" to .gitignore file and make sure that this directory must not tracked by git.
+[5]. Make sure that `.dvc` directory will tracked by GitHub.
