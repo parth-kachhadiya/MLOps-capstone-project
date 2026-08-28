@@ -34,3 +34,35 @@
 [3]. `dvc remote add -d mylocal <your_local_dir_name>` (At `mylocal` you can give any name)
 [4]. Add "local_dvc_s3" to .gitignore file and make sure that this directory must not tracked by git.
 [5]. Make sure that `.dvc` directory will tracked by GitHub.
+
+
+
+                        +------------------------+
+                        |   DVC + Data source    |
+                        +------------------------+
+
+[1]. Add code in below files
+     • logger
+     • data_ingestion.py
+     • data_preprocessing.py
+     • feature_engineering.py
+     • model_building.py
+     • model_evaluation.py
+     • register_model.py
+[2]. Add 'dvc.yaml' file to automate execution of entire pipeline.
+[3]. Add 'params.yaml' file.
+[4]. Execute `dvc repro` command and execute entire pipeline.
+     After execution, just check status of dvc using `dvc status`
+[5]. Helpers
+     ⇨ `dvc remote list` (Check remote repos)
+     ⇨ `dvc remote remove <repo_name>` (Remove repo/source as remote repo)
+[6]. `pip install dvc[s3] awscli`
+[7]. AWS configurations
+     ⇨ Create IAM user (If not) and copy its credentials.
+     ⇨ Create S3 bucket (If not).
+     ⇨ `aws configure`
+     ⇨ Set S3 bucket as dvc remote storage by executing below command.
+        `dvc remote add -d <any_name> s3://<s3_bucket_name>`
+[8]. DVC commands
+     ⇨ `dvc commit`
+     ⇨ `dvc push` (All artifacts related files will be pushed to s3 bucket)

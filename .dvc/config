@@ -1,4 +1,4 @@
 [core]
-    remote = my_local
-['remote "my_local"']
-    url = ../local_dvc_s3
+    remote = remote_s3_bucket
+['remote "remote_s3_bucket"']
+    url = s3://my-mlops-capstone-bucket
