@@ -63,6 +63,9 @@
      ⇨ `aws configure`
      ⇨ Set S3 bucket as dvc remote storage by executing below command.
         `dvc remote add -d <any_name> s3://<s3_bucket_name>`
+[8]. DVC Secret tokens.
+     ⇨ Dagshub repo > Your settings > token > Generate a new token
+     🚨 Set this secret into your GitHub > Settings > Secret and variables > Actions > New repository secret > Set capstone_secret : <secret> here.
 [8]. DVC commands
      ⇨ `dvc commit`
      ⇨ `dvc push` (All artifacts related files will be pushed to s3 bucket)
