@@ -1,4 +1,4 @@
-boto3==1.43.78
+boto3
 dagshub==0.7.1
 dvc[s3]==3.3.0
 Flask==3.1.3
