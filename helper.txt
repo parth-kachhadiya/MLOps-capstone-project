@@ -58,7 +58,7 @@
      ⇨ `dvc remote remove <repo_name>` (Remove repo/source as remote repo)
 [6]. `pip install dvc[s3] awscli`
 [7]. AWS configurations
-     ⇨ Create IAM user (If not) and copy its credentials.
+     ⇨ Create IAM user (If not) and copy its credentials (Permissions : AdministratorAccess, AmazonEC2ContainerRegistryFullAccess).
      ⇨ Create S3 bucket (If not).
      ⇨ `aws configure`
      ⇨ Set S3 bucket as dvc remote storage by executing below command.
@@ -87,3 +87,19 @@
           • `docker build -t mlops-capstone:latest .`                                                            
      (b). Execute docker image (CAPSTONE_SECRET = Dagshub token for authentication).
           • `docker run -p 8888:5000 -e CAPSTONE_TEST=2c90a95caa138a4a6a04400abc17b9a366e7b3a0 mlops-capstone:latest`
+
+
+
+                        +-------------+
+                        |   AWS ECR   |
+                        +-------------+
+
+[1]. Create a ECR named as `ecr-mlops-capstone-project`
+[2]. Setup below variables on github secrets.
+     ↪ AWS_ACCOUNT_ID
+     ↪ AWS_ACCESS_KEY_ID
+     ↪ AWS_SECRET_ACCESS_KEY
+     ↪ AWS_REGION
+     ↪ ECR_REPOSITORY
+     🚨 Make sure that IAM user must have `AdministratorAccess` and `AmazonEC2ContainerRegistryFullAccess` permissions.
+[3]. Execute CICD till push image to ECR.
