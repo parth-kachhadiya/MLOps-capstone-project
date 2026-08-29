@@ -220,5 +220,4 @@ __marimo__/
 # Others
 notebooks/
 local_dvc_s3/
-data/
 models/
