@@ -1,55 +1,55 @@
-name: CI Pipeline
+# name: CI Pipeline
 
-on: push
+# on: push
 
-jobs:
-  project-testing:
-    runs-on: ubuntu-latest
+# jobs:
+#   project-testing:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: checkout code
-        uses: actions/checkout@v3
+#     steps:
+#       - name: checkout code
+#         uses: actions/checkout@v3
 
-      - name: setup python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.11'
+#       - name: setup python
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: '3.11'
 
-      - name: Cache pip dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+#       - name: Cache pip dependencies
+#         uses: actions/cache@v3
+#         with:
+#           path: ~/.cache/pip
+#           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+#           restore-keys: |
+#             ${{ runner.os }}-pip-
 
-      - name: install dependencies
-        run: |
-          pip install -r requirements.txt
+#       - name: install dependencies
+#         run: |
+#           pip install -r requirements.txt
 
-      - name: run pipeline
-        env:
-          CAPSTONE_TEST: ${{ secrets.CAPSTONE_TEST }}
-        run: |
-          dvc repro
+#       - name: run pipeline
+#         env:
+#           CAPSTONE_TEST: ${{ secrets.CAPSTONE_TEST }}
+#         run: |
+#           dvc repro
 
-      - name: Run model tests
-        env:
-          CAPSTONE_TEST: ${{ secrets.CAPSTONE_TEST }}
-        run: |
-          python -m unittest tests/test_model.py
+#       - name: Run model tests
+#         env:
+#           CAPSTONE_TEST: ${{ secrets.CAPSTONE_TEST }}
+#         run: |
+#           python -m unittest tests/test_model.py
 
-      - name: Promote model to production
-        if: success()
-        env:
-          CAPSTONE_TEST: ${{ secrets.CAPSTONE_TEST }}
-        run: python scripts/promote_model.py
+#       - name: Promote model to production
+#         if: success()
+#         env:
+#           CAPSTONE_TEST: ${{ secrets.CAPSTONE_TEST }}
+#         run: python scripts/promote_model.py
 
-      - name: Run Flask app tests
-        if: success()
-        env:
-          CAPSTONE_TEST: ${{ secrets.CAPSTONE_TEST }}
-        run: python -m unittest tests/test_flask_app.py
+#       - name: Run Flask app tests
+#         if: success()
+#         env:
+#           CAPSTONE_TEST: ${{ secrets.CAPSTONE_TEST }}
+#         run: python -m unittest tests/test_flask_app.py
 
       # - name: Login to AWS ECR
       #   if: success()

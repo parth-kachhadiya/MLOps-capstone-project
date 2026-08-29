@@ -73,7 +73,7 @@ def normalize_text(text):
 # dagshub.init(repo_owner='parthkachhadiya04', repo_name='MLOps-capstone-project', mlflow=True)
 # -------------------------------------------------------------------------------------
 
-# Below code block is for production use
+# Below code block is for production use / in github actions
 # -------------------------------------------------------------------------------------
 # Set up DagsHub credentials for MLflow tracking
 dagshub_token = os.getenv("CAPSTONE_TEST")

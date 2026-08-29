@@ -66,7 +66,24 @@
 [8]. DVC Secret tokens.
      ⇨ Dagshub repo > Your settings > token > Generate a new token
      🚨 Set this secret into your GitHub > Settings > Secret and variables > Actions > New repository secret > Set capstone_secret : <secret> here.
-[8]. DVC commands
+[9]. DVC commands
      ⇨ `dvc repro` (Execute entire pipeline)
      ⇨ `dvc commit`
      ⇨ `dvc push` (All artifacts related files will be pushed to s3 bucket)
+
+
+[HELPER]. To generate `requirements.txt` file of any sub-application of a giant app (Like flask_app in our case).
+     • `pip install pipreqs`
+     • `cd flask_app`
+     • `pipreqs . --force`
+
+                        +-------------+
+                        |   Docker    |
+                        +-------------+
+
+[1]. Add `Dockerfile` in root directory.
+[2]. Build docker image be executing below command
+     (a). Build docker image.
+          • `docker build -t mlops-capstone:latest .`                                                            
+     (b). Execute docker image (CAPSTONE_SECRET = Dagshub token for authentication).
+          • `docker run -p 8888:5000 -e CAPSTONE_TEST=2c90a95caa138a4a6a04400abc17b9a366e7b3a0 mlops-capstone:latest`
