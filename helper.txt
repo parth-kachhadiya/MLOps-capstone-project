@@ -166,8 +166,102 @@
        Add rule : [Type : Custom TCP, Port range : 5000, Source : Anywhere-IPv4] > Save rules. 
      • Git add > commit > push.
 
-[3]. Get Load balancer URL
+[3]. Get Load balancer URL / external-ip
      • `kubectl get svc flask-app-service`
 
-[4]. Once the load balancer service is up, get the external IP:
-     • `kubectl get svc flask-app-service`
+[4]. Try `<external-ip>:5000`
+     • afbb28255a1eb4a048665e974a3ae01e-329529135.us-east-1.elb.amazonaws.com:5000
+     • Test : `curl afbb28255a1eb4a048665e974a3ae01e-329529135.us-east-1.elb.amazonaws.com:5000` on cmd
+     💐 Congratulations, we did it....😃😃 
+
+
+                        +-----------------------------+
+                        |   Prometheus server setup   |
+                        +-----------------------------+
+
+[1]. Namespace check.
+     • `kubectl get namespaces`
+
+[2]. EC2 for Prometheus
+     • Launch an EC2 instance with configurations.
+       - OS : Obuntu
+       - Instance type : t3.medium
+       - Check [Allow SSC traffic from anywhere, Allow HTTPS traffic from the internet, Allow HTTP traffic from the internet]
+       - Configure storage : 20
+       -> Launch instance
+      🚨 Security (Prometheus server ec2) > Security groups > Edit inbound rules > Add rule >
+         Add rule : [Type : Custom TCP, Port range : 9090, Source : Anywhere-IPv4] > Save rules. 
+
+     (HELPER). If you want to access ec2 on your system
+     ⇨ `ssh -i <your_key.pem> ubuntu@<your-ec2-public-ip>` (Make sure that your .pem file is in your current folder where your cmd/powershell is running)
+
+[3]. Execute below commands one by one on EC2 console.
+     • sudo apt update && sudo apt upgrade -y
+     • `wget https://github.com/prometheus/prometheus/releases/download/v3.10.0/prometheus-3.10.0.linux-amd64.tar.gz`  (Install prometheus)
+     • `tar -xvzf prometheus-3.10.0.linux-amd64.tar.gz` (Extract the downloaded archieve)
+     • `mv prometheus-3.10.0.linux-amd64 prometheus`
+
+[4]. Move files to standard path.
+     • `sudo mv prometheus /etc/prometheus`
+     • `sudo mv /etc/prometheus/prometheus /usr/local/bin/`
+
+[5]. Create prometheus configurations.
+     • `sudo nano /etc/prometheus/prometheus.yml`  (Open file for editing)
+       ```
+       global:
+         scrape_interval: 10s
+       
+       scrape_configs:
+         - job_name: "flask-app"
+           static_configs:
+             - targets: ["afbb28255a1eb4a048665e974a3ae01e-329529135.us-east-1.elb.amazonaws.com:5000"]
+       ```
+       Press : Ctrl + o > Enter > Ctrl + x 
+     • `cat /etc/prometheus/prometheus.yml` (Verify changes)
+     • `which prometheus` (Returns full prometheus binary path)
+
+[6]. Run prometheus with config file.
+     • `<output_of_which_prometheus_command> --config.file=/etc/prometheus/prometheus.yml`
+       `/usr/local/bin/prometheus --config.file=/etc/prometheus/prometheus.yml`
+     • To open prometheus server:
+       - Copy IPv4 address of prometheus-server ec2 instance.
+
+
+
+                        +--------------------------+
+                        |   Grafana server setup   |
+                        +--------------------------+
+
+[1]. EC2 for Grafana
+     • Launch an EC2 instance with configurations.
+       - OS : Obuntu
+       - Instance type : t3.medium
+       - Check [Allow SSC traffic from anywhere, Allow HTTPS traffic from the internet, Allow HTTP traffic from the internet]
+       - Configure storage : 20
+       -> Launch instance
+      🚨 Security (Prometheus server ec2) > Security groups > Edit inbound rules > Add rule >
+         Add rule : [Type : Custom TCP, Port range : 9090, Source : Anywhere-IPv4] > Save rules. 
+
+[2]. Execute below commands one by one on EC2 console.
+     • sudo apt update && sudo apt upgrade -y
+     • `wget https://dl.grafana.com/grafana-enterprise/release/13.2.0/grafana-enterprise_13.2.0_32077357341_linux_amd64.deb`  (Install grafana)
+     • `sudo apt install ./grafana-enterprise_13.2.0_32077357341_linux_amd64.deb -y` (Install grafana)
+     • `sudo systemctl start grafana-server` (Start the grafana service)
+     • `sudo systemctl enable grafana-server` (Enable grafana to start on boot)
+     • `sudo systemctl status grafana-server` (Check grafana status)
+     • `http://<public_ipv4>:3000` (Open grafana server, username/password = admin)
+
+[3]. Add prometheus as datasource on Grafana and test it.
+
+
+                        +--------------------------+
+                        |   AWS Resource Cleanup   |
+                        +--------------------------+
+
+▣ `kubectl delete deployment flask-app` (Delete deployment)
+▣ `kubectl delete service flask-app-service` (Delete service)
+▣ `kubectl delete secret capstone-secret` (Delete environment variable)
+▣ `eksctl delete cluster --name mlops-capstone-cluster --region us-east-1` (Delete cluster)
+▣ `eksctl get cluster --region us-east-1`
+▣ Delete artifacts of ECR and S3 (Optional - Delete ECR and S3)
+▣ Confirm service termination on AWS support chat.
