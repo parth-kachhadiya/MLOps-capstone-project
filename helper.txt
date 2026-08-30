@@ -94,7 +94,7 @@
                         |   AWS ECR   |
                         +-------------+
 
-[1]. Create a ECR named as `ecr-mlops-capstone-project`
+[1]. Create a ECR named as `flask-app`
 [2]. Setup below variables on github secrets.
      ↪ AWS_ACCOUNT_ID
      ↪ AWS_ACCESS_KEY_ID
@@ -164,3 +164,10 @@
      • Add 'deployment.yaml'.
      • Click on EC2 cluster id (created by kubectl) > Security > Security groups > Edit enbound rules > 
        Add rule : [Type : Custom TCP, Port range : 5000, Source : Anywhere-IPv4] > Save rules. 
+     • Git add > commit > push.
+
+[3]. Get Load balancer URL
+     • `kubectl get svc flask-app-service`
+
+[4]. Once the load balancer service is up, get the external IP:
+     • `kubectl get svc flask-app-service`
